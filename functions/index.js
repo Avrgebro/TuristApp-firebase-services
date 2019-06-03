@@ -80,3 +80,18 @@ exports.getPlacesByIndex = functions.https.onRequest((request, response) => {
     console.log(err)
   })
 });
+
+exports.writeTrainingData = functions.https.onRequest((request, response) => {
+  var db = admin.firestore()
+  db.collection("Profiles").add({
+    data: request.url.slice(1)
+  })
+  .then(function(docRef) {
+    console.log("Document written with ID: ", docRef.id);
+    response.send(docRef.id)
+    return docRef.id
+  })
+  .catch(function(error) {
+    console.error("Error adding document: ", error);
+  });
+});
